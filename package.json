@@ -1,0 +1,26 @@
+{
+  "name": "stakubackend",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "pm2 start -w -i 1 --name backend ./dist/src/index.js",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 tsc -p .",
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1113.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
+    "pm2": "^5.2.0",
+    "sharp": "^0.30.3"
+  }
+}
