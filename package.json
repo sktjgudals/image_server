@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "pm2 start -w -i 1 --name backend ./dist/src/index.js",
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 tsc -p .",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=2048 tsc -p .",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
     "stop": "pm2 stop 0"
   },
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1113.0",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "pm2": "^5.2.0"
