@@ -12,8 +12,8 @@ const profileImage = require("./router/user/setting/profileimage");
 const token = require("./router/user/token");
 
 const corsOptions = {
-  origin: true, //included origin as true
-  credentials: true, //included credentials as true
+  origin: true,
+  credentials: true,
 };
 
 app.use(cookieParser());

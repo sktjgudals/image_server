@@ -21,12 +21,11 @@ type User = {
 
 const cookieExtractor = async (req: Request) => {
   const { Authorization } = req.cookies;
-  const res = await jwt.verify(Authorization);
-  return res;
+  return await jwt.verify(Authorization);
 };
 
 const setUserToken = async (res: Response, user: User) => {
-  const token = await jwt.sign(user);
+  const { token } = await jwt.sign(user);
   res
     .status(201)
     .cookie("Authorization", token.token, {
@@ -56,17 +55,13 @@ const dbSearch = async () => {
 app.post(
   "/refresh",
   async (req: Request, res: Response, next: NextFunction) => {
-    const payload = {
-      userId: 5,
-      displayName: "test",
-      profileImage:
-        "https://stackoverflows3.s3.ap-northeast-2.amazonaws.com/1672364664612.png",
-    };
-    const data = await dbSearch();
-    console.log(data);
-    // const result = await cookieExtractor(req);
-    // console.log(result);
-    // const token = await setUserToken(res, payload);
+    const result = await cookieExtractor(req);
+    console.log(result);
+    if (result) {
+      const data = await dbSearch();
+      console.log(data);
+      // const token = await setUserToken(res, payload);
+    }
 
     res.status(200).send();
   }
