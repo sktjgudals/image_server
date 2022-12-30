@@ -19,9 +19,13 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1113.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
-    "pm2": "^5.2.0"
+    "jsonwebtoken": "^9.0.0",
+    "mysql": "^2.18.1",
+    "pm2": "^5.2.0",
+    "rand-token": "^1.0.1"
   }
 }

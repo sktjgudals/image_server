@@ -1,7 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import { uploadProfileImage } from "../../../../util/aws/uploadProfileImage";
-import { Credentials } from "aws-sdk";
-import S3 from "aws-sdk/clients/s3";
 
 const app = express.Router();
 
