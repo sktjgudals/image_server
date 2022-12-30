@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
-import { uploadProfileImage } from "../../../../util/aws/uploadImage";
+
+import { uploadQuestionsImage } from "../../../util/aws/uploadImage";
 
 const app = express.Router();
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("Post: profileImage  , Time: ", Date.now());
+  console.log("Post: questionsImage  , Time: ", Date.now());
   next();
 });
 
@@ -18,7 +19,7 @@ app.post("/", async (req: Request, res: Response, next: NextFunction) => {
         image.replace(/^data:image\/\w+;base64,/, ""),
         "base64"
       );
-      const path = await uploadProfileImage(base64data, userId + time, type);
+      const path = await uploadQuestionsImage(base64data, userId + time, type);
       if (!path) return res.status(401);
       return res.status(200).json({ url: path });
     } catch (e) {

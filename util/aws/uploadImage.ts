@@ -21,7 +21,32 @@ export const uploadProfileImage = async (
 ) => {
   return await new Promise<any>(async (resolve, reject) => {
     const params = {
-      Bucket: `stackoverflows3`,
+      Bucket: `stackoverflows3/profileImages`,
+      Key: `${dirname}.${type}`,
+      Body: base64,
+      ACL: "public-read",
+      ContentEncoding: "base64",
+      ContentType: `image/${type}`,
+    };
+    try {
+      const { Location } = await s3Client.upload(params).promise();
+      return resolve(`${Location}`);
+    } catch (e) {
+      if (e) {
+        return resolve(false);
+      }
+    }
+  });
+};
+
+export const uploadQuestionsImage = async (
+  base64: any,
+  dirname: string,
+  type: string
+) => {
+  return await new Promise<any>(async (resolve, reject) => {
+    const params = {
+      Bucket: `stackoverflows3/questionImages`,
       Key: `${dirname}.${type}`,
       Body: base64,
       ACL: "public-read",

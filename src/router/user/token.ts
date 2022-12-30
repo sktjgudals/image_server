@@ -41,7 +41,7 @@ const dbSearch = async () => {
   return new Promise((resolve, reject) => {
     try {
       connection.query(
-        "SHOW DATABASES",
+        `SELECT * FROM users WHERE user_id=1`,
         (error: any, rows: any, fields: any) => {
           if (error) throw error;
           resolve(rows);
