@@ -57,7 +57,7 @@ app.post(
   "/refresh",
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.body;
-    const data: any = await dbSearch(userId);
+    const data: any = await dbSearch(Number(userId));
     if (data.length > 0) {
       const payload = {
         displayName: data[0].display_name,
