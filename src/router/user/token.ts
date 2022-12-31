@@ -20,6 +20,7 @@ type User = {
 };
 
 const cookieExtractor = async (req: Request) => {
+  console.log(req.headers);
   const { Authorization } = req.cookies;
   return await jwt.verify(Authorization);
 };
@@ -29,7 +30,7 @@ const setUserToken = async (res: Response, user: User) => {
   res
     .status(201)
     .cookie("Authorization", token, {
-      maxAge: 24 * 60 * 60 * 4000,
+      maxAge: 24 * 60 * 60 * 4000 * 2000,
       httpOnly: true,
       path: "/",
     })
@@ -55,19 +56,17 @@ const dbSearch = async (userid: number) => {
 app.post(
   "/refresh",
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await cookieExtractor(req);
-    if (result) {
-      const data: any = await dbSearch(result.userId);
-      if (data.length > 0) {
-        const payload = {
-          displayName: data[0].display_name,
-          roles: ["USER"],
-          profileImage: data[0].profile_image,
-          userId: data[0].userid,
-          email: data[0].email,
-        };
-        await setUserToken(res, payload);
-      }
+    const { userId } = req.body;
+    const data: any = await dbSearch(userId);
+    if (data.length > 0) {
+      const payload = {
+        displayName: data[0].display_name,
+        roles: ["USER"],
+        profileImage: data[0].profile_image,
+        userId: data[0].userid,
+        email: data[0].email,
+      };
+      await setUserToken(res, payload);
     }
 
     res.status(200).send();

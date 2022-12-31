@@ -14,6 +14,7 @@ const token = require("./router/user/token");
 const corsOptions = {
   origin: true,
   credentials: true,
+  exposedHeaders: ["set-cookie"],
 };
 
 app.use(cookieParser());
