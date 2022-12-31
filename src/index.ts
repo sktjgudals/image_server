@@ -14,12 +14,10 @@ const token = require("./router/user/token");
 const corsOptions = {
   origin: true,
   credentials: true,
-  exposedHeaders: ["set-cookie"],
 };
 
 app.use(cookieParser());
 app.use(cors(corsOptions));
-app.use(helmet());
 app.use(express.json({ limit: "300mb" }));
 app.use(express.urlencoded({ limit: "300mb", extended: true }));
 
