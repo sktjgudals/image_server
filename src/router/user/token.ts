@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-connection.connect();
+// connection.connect();
 
 const app = express.Router();
 
@@ -36,11 +36,11 @@ const setUserToken = async (res: Response, user: User) => {
     .send();
 };
 
-const dbSearch = async () => {
+const dbSearch = async (userid: number) => {
   return new Promise((resolve, reject) => {
     try {
       connection.query(
-        `SELECT * FROM users WHERE user_id=1`,
+        `SELECT * FROM users WHERE userid=${userid}`,
         (error: any, rows: any, fields: any) => {
           if (error) throw error;
           resolve(rows);
@@ -56,9 +56,8 @@ app.post(
   "/refresh",
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await cookieExtractor(req);
-    console.log(result);
     if (result) {
-      const data = await dbSearch();
+      const data = await dbSearch(result.userId);
       console.log(data);
       // const token = await setUserToken(res, payload);
     }
