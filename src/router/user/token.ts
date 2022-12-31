@@ -9,14 +9,14 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-// connection.connect();
-
 const app = express.Router();
 
 type User = {
   userId: Number;
   displayName: String;
   profileImage: String;
+  roles: String[];
+  email: String;
 };
 
 const cookieExtractor = async (req: Request) => {
@@ -28,7 +28,7 @@ const setUserToken = async (res: Response, user: User) => {
   const { token } = await jwt.sign(user);
   res
     .status(201)
-    .cookie("Authorization", token.token, {
+    .cookie("Authorization", token, {
       maxAge: 24 * 60 * 60 * 4000,
       httpOnly: true,
       path: "/",
@@ -40,14 +40,14 @@ const dbSearch = async (userid: number) => {
   return new Promise((resolve, reject) => {
     try {
       connection.query(
-        `SELECT * FROM users WHERE userid=${userid}`,
+        `SELECT * FROM users  WHERE userid=${userid}`,
         (error: any, rows: any, fields: any) => {
           if (error) throw error;
           resolve(rows);
         }
       );
     } catch (e) {
-      reject(e);
+      resolve(false);
     }
   });
 };
@@ -57,9 +57,17 @@ app.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await cookieExtractor(req);
     if (result) {
-      const data = await dbSearch(result.userId);
-      console.log(data);
-      // const token = await setUserToken(res, payload);
+      const data: any = await dbSearch(result.userId);
+      if (data.length > 0) {
+        const payload = {
+          displayName: data[0].display_name,
+          roles: ["USER"],
+          profileImage: data[0].profile_image,
+          userId: data[0].userid,
+          email: data[0].email,
+        };
+        await setUserToken(res, payload);
+      }
     }
 
     res.status(200).send();

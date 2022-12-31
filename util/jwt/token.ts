@@ -3,12 +3,21 @@ const jwt = require("jsonwebtoken");
 const secretKey = require("./config").secretKey;
 const options = require("./config").options;
 
+type User = {
+  userId: Number;
+  displayName: String;
+  profileImage: String;
+  roles: String[];
+  email: String;
+};
+
 module.exports = {
-  sign: async (info: any) => {
+  sign: async (info: User) => {
     const payload = {
-      userId: info.id,
+      userId: info.userId,
       displayName: info.displayName,
       profileImage: info.profileImage,
+      email: info.email,
       roles: ["USER"],
     };
 
